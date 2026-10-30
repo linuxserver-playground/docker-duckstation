@@ -19,7 +19,11 @@ RUN \
     /usr/share/selkies/www/icon.png \
     https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/duckstation-logo.png && \
   echo "**** install packages ****" && \
-  DOWNLOAD_URL=$(curl -sX GET "https://api.github.com/repos/stenzek/duckstation/releases/latest" \
+  if [ -z ${DUCKSTATION_VERSION+x} ]; then \
+    DUCKSTATION_VERSION=$(curl -sX GET "https://api.github.com/repos/stenzek/duckstation/releases/latest" \
+      | jq -r '.tag_name'); \
+  fi && \
+  DOWNLOAD_URL=$(curl -sX GET "https://api.github.com/repos/stenzek/duckstation/releases/tags/${DUCKSTATION_VERSION}" \
     | jq -r 'first(.assets[].browser_download_url | select(test("x64.AppImage")))') && \
   curl -o \
     /tmp/duck.app -L \

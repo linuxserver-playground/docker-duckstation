@@ -10,6 +10,9 @@ upstream:
   version:
     type: github_release
     repo: stenzek/duckstation
+    require_assets:
+      - asset: '-x64\.AppImage$'
+      - asset: '-arm64\.AppImage$'
   notes:
     type: github_release
     repo: stenzek/duckstation
